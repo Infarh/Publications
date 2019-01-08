@@ -1,0 +1,34 @@
+﻿@model Publications.Web.Models.Publications.PublicationInfo
+
+@{
+    ViewData["Title"] = "Создать публикацию";
+}
+
+<h2>Создать публикацию</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        @using (Html.BeginForm())
+        {
+            <h4>Новая публикация</h4>
+            <hr />
+            @Html.ValidationSummary(true, "Ошибка ввода данных", new { @class = "text-danger" })
+            <div class="form-group">
+                <p>@Html.LabelFor(m => m.PublicationName)</p>
+                <p>@Html.EditorFor(m => m.PublicationName)</p>
+                @Html.ValidationMessageFor(m => m.PublicationName)
+            </div>
+            <div class="form-group">
+                <p>@Html.LabelFor(m => m.PublicationDate)</p>
+                <p>@Html.EditorFor(m => m.PublicationDate)</p>
+                @Html.ValidationMessageFor(m => m.PublicationDate)
+            </div>
+            <button type="submit" class="btn btn-primary">Создать</button>
+            <a asp-action="Index" class="btn">Назад</a>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

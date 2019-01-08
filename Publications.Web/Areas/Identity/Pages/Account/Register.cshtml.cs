@@ -15,21 +15,21 @@ namespace Publications.Web.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly SignInManager<IdentityUser> _SignInManager;
+        private readonly UserManager<IdentityUser> _UserManager;
+        private readonly ILogger<RegisterModel> _Logger;
+        private readonly IEmailSender _EmailSender;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender EmailSender)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _logger = logger;
-            _emailSender = emailSender;
+            _UserManager = userManager;
+            _SignInManager = signInManager;
+            _Logger = logger;
+            _EmailSender = EmailSender;
         }
 
         [BindProperty]
@@ -41,57 +41,48 @@ namespace Publications.Web.Areas.Identity.Pages.Account
         {
             [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [Display(Name = "Электронная почта")]
             public string Email { get; set; }
 
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "{0} доллжно быть от {2} и не больше {1} символов.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Пароль")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Повторите ввод пароля")]
+            [Compare(nameof(Password), ErrorMessage = "Пароль и его подтверждение не совпадают.")]
             public string ConfirmPassword { get; set; }
         }
 
-        public void OnGet(string returnUrl = null)
-        {
-            ReturnUrl = returnUrl;
-        }
+        public void OnGet(string returnUrl = null) => ReturnUrl = returnUrl;
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<IActionResult> OnPostAsync(string ReturnedUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Content("~/");
-            if (ModelState.IsValid)
+            ReturnedUrl = ReturnedUrl ?? Url.Content("~/");
+            if (!ModelState.IsValid) return Page();
+            var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+            var result = await _UserManager.CreateAsync(user, Input.Password);
+            if (result.Succeeded)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
-                var result = await _userManager.CreateAsync(user, Input.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
+                _Logger.LogInformation("Пользователь создал новую учётную запись с паролем.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { userId = user.Id, code = code },
-                        protocol: Request.Scheme);
+                var code = await _UserManager.GenerateEmailConfirmationTokenAsync(user);
+                var callbackUrl = Url.Page(
+                    "/Account/ConfirmEmail",
+                    pageHandler: null,
+                    values: new { userId = user.Id, code = code },
+                    protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                await _EmailSender.SendEmailAsync(Input.Email, "Подтвердите вашу электронную почту",
+                    $"Пожалуйста, подтвердите Вашу электронную почту <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>переходом по этой ссылке</a>.");
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return LocalRedirect(returnUrl);
-                }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                await _SignInManager.SignInAsync(user, isPersistent: false);
+                return LocalRedirect(ReturnedUrl);
             }
+            foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
 
-            // If we got this far, something failed, redisplay form
             return Page();
         }
     }

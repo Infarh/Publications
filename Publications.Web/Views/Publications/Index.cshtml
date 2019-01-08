@@ -1,0 +1,66 @@
+﻿@using Publications.Web.Data
+@model Publications.Web.Models.Publications.OverviewModel
+
+@{
+    ViewData["Title"] = "Публикации";
+}
+
+<h2>Публикации</h2>
+
+<h3>Авторы</h3>
+@if (!Model.Authors.Any())
+{
+    <p>Отсутствуют</p>
+}
+else
+{
+    <table>
+        <tr>
+            <th>Автор</th>
+            <th></th>
+            <th></th>
+        </tr>
+        @foreach (var author in Model.Authors)
+        {
+            <tr>
+                @using (Html.BeginForm("RemoveAuthor", "Publications", new { author.Id }, FormMethod.Post))
+                {
+                    <td>@author.Name</td>
+                    <td><a asp-action="EditAuthor" asp-route-id="@author.Id" class="btn btn-sm btn-primary">ред</a></td>
+                    <td><button type="submit" class="btn btn-sm btn-danger">уд</button></td>
+                }
+            </tr>
+        }
+    </table>
+}
+<p><a asp-action="CreateAuthor">Добавить</a></p>
+
+<h3>Публикации</h3>
+
+@if (!Model.Publications.Any())
+{
+    <p>Отсутствуют</p>
+}
+else
+{
+    <table>
+        <tr>
+            <th>Публикация</th>
+            <th></th>
+            <th></th>
+        </tr>
+        @foreach (var publication in Model.Publications)
+        {
+            <tr>
+                @using (Html.BeginForm("RemovePublication", "Publications", new { publication.Id }, FormMethod.Post))
+                {
+                    <td>@publication.Name</td>
+                    <td><a asp-action="EditPublication" asp-route-id="@publication.Id" class="btn btn-sm btn-primary">ред</a></td>
+                    <td><button type="submit" class="btn btn-sm btn-danger">уд</button></td>
+                }
+            </tr>
+            //<li><a>@publication.Name</a> @Html.ActionLink("уд.", "RemovePublication", new {publication.Id}, new {@class = "text-danger"})</li>
+        }
+    </table>
+}
+<p>@Html.ActionLink("Добавить", "CreatePublication")</p>
