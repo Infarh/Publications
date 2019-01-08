@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Publications.Web.Data;
 
 namespace Publications.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190108120143_Authors")]
+    partial class Authors
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,14 +47,14 @@ namespace Publications.Web.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "34ac5649-c3de-4bfe-82c8-356fd910fd75",
-                            ConcurrencyStamp = "a5e85ac7-e581-49da-b6f3-9b0fe04dda8b",
+                            Id = "c05a8f20-f990-48ee-be10-fc56e0ae0dac",
+                            ConcurrencyStamp = "52db72ff-0eee-47c3-b04b-bbde4c007049",
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = "0a9c986f-a9d2-43fa-ab39-aac257f9aa24",
-                            ConcurrencyStamp = "0a5d5dd8-0498-4594-8709-6962f53352be",
+                            Id = "094ff32c-347d-4947-8eba-e1f7aea38ff9",
+                            ConcurrencyStamp = "05ca32e6-cbf0-4adf-894d-1f9f27c9d64d",
                             Name = "User"
                         });
                 });
@@ -130,12 +132,12 @@ namespace Publications.Web.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "66f31857-d511-47ed-813f-2ccfbf2a356c",
+                            Id = "fa52de6b-cb50-4439-a70f-402de5edf037",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c9585ae8-34f0-4817-bd71-2f08e48f554a",
+                            ConcurrencyStamp = "eeaadb33-f1f9-4d07-beaa-521533e98389",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAELZGRAStWw2Egiwcov6kM5LNVYXNiEgLIH6B9hva7NCuJmtq7MJFfxqQeLufg2gbsA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAELcbIscFDA3yN0AEiv/jncMrL/6GdWMvFpAjuJX1TZBSPH8Wj/UGyCwiNn9bqiBaLQ==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "Admin"
@@ -197,8 +199,8 @@ namespace Publications.Web.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "66f31857-d511-47ed-813f-2ccfbf2a356c",
-                            RoleId = "34ac5649-c3de-4bfe-82c8-356fd910fd75"
+                            UserId = "fa52de6b-cb50-4439-a70f-402de5edf037",
+                            RoleId = "c05a8f20-f990-48ee-be10-fc56e0ae0dac"
                         });
                 });
 
@@ -309,83 +311,6 @@ namespace Publications.Web.Data.Migrations
                     b.ToTable("AuthorPositions");
                 });
 
-            modelBuilder.Entity("Publications.Web.Data.AuthorPublication", b =>
-                {
-                    b.Property<int>("AuthorId");
-
-                    b.Property<int>("PublicationId");
-
-                    b.HasKey("AuthorId", "PublicationId");
-
-                    b.HasIndex("PublicationId");
-
-                    b.ToTable("AuthorPublication");
-                });
-
-            modelBuilder.Entity("Publications.Web.Data.Publication", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Meta");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<int?>("PlaceId");
-
-                    b.Property<int?>("TypeId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlaceId");
-
-                    b.HasIndex("TypeId");
-
-                    b.ToTable("Publications");
-                });
-
-            modelBuilder.Entity("Publications.Web.Data.PublicationPlace", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Meta");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PublicationPlaces");
-                });
-
-            modelBuilder.Entity("Publications.Web.Data.PublicationType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Meta");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PublicationTypes");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole")
@@ -444,30 +369,6 @@ namespace Publications.Web.Data.Migrations
                     b.HasOne("Publications.Web.Data.AuthorPosition", "Position")
                         .WithMany()
                         .HasForeignKey("PositionId");
-                });
-
-            modelBuilder.Entity("Publications.Web.Data.AuthorPublication", b =>
-                {
-                    b.HasOne("Publications.Web.Data.Author", "Author")
-                        .WithMany("Publications")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Publications.Web.Data.Publication", "Publication")
-                        .WithMany("Authors")
-                        .HasForeignKey("PublicationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Publications.Web.Data.Publication", b =>
-                {
-                    b.HasOne("Publications.Web.Data.PublicationPlace", "Place")
-                        .WithMany()
-                        .HasForeignKey("PlaceId");
-
-                    b.HasOne("Publications.Web.Data.PublicationType", "Type")
-                        .WithMany()
-                        .HasForeignKey("TypeId");
                 });
 #pragma warning restore 612, 618
         }

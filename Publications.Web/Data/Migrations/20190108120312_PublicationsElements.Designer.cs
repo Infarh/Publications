@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Publications.Web.Data;
 
 namespace Publications.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190108120312_PublicationsElements")]
+    partial class PublicationsElements
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,14 +47,14 @@ namespace Publications.Web.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "34ac5649-c3de-4bfe-82c8-356fd910fd75",
-                            ConcurrencyStamp = "a5e85ac7-e581-49da-b6f3-9b0fe04dda8b",
+                            Id = "b40d9b8f-8fe4-4bc9-a5ac-dd7f85d5d642",
+                            ConcurrencyStamp = "70361186-b338-444f-9064-f1313a6cdf15",
                             Name = "Admin"
                         },
                         new
                         {
-                            Id = "0a9c986f-a9d2-43fa-ab39-aac257f9aa24",
-                            ConcurrencyStamp = "0a5d5dd8-0498-4594-8709-6962f53352be",
+                            Id = "08d46b21-bf8f-4132-bc73-f36beb0c2e0c",
+                            ConcurrencyStamp = "32913118-6dc7-485e-8feb-6c975ea07abe",
                             Name = "User"
                         });
                 });
@@ -130,12 +132,12 @@ namespace Publications.Web.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "66f31857-d511-47ed-813f-2ccfbf2a356c",
+                            Id = "40d14a4f-5166-4929-8eff-42a1d2dd2d14",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c9585ae8-34f0-4817-bd71-2f08e48f554a",
+                            ConcurrencyStamp = "5f2f4be7-013c-4d34-8d57-cb77ff1edc05",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAELZGRAStWw2Egiwcov6kM5LNVYXNiEgLIH6B9hva7NCuJmtq7MJFfxqQeLufg2gbsA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEEZ5zLD+0+YQZbjr73qU+7ckpQ0hJBMDWX3EotyGAUsNmR/fa66bVWUkP/1WegmCEw==",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "Admin"
@@ -197,8 +199,8 @@ namespace Publications.Web.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "66f31857-d511-47ed-813f-2ccfbf2a356c",
-                            RoleId = "34ac5649-c3de-4bfe-82c8-356fd910fd75"
+                            UserId = "40d14a4f-5166-4929-8eff-42a1d2dd2d14",
+                            RoleId = "b40d9b8f-8fe4-4bc9-a5ac-dd7f85d5d642"
                         });
                 });
 
@@ -309,47 +311,6 @@ namespace Publications.Web.Data.Migrations
                     b.ToTable("AuthorPositions");
                 });
 
-            modelBuilder.Entity("Publications.Web.Data.AuthorPublication", b =>
-                {
-                    b.Property<int>("AuthorId");
-
-                    b.Property<int>("PublicationId");
-
-                    b.HasKey("AuthorId", "PublicationId");
-
-                    b.HasIndex("PublicationId");
-
-                    b.ToTable("AuthorPublication");
-                });
-
-            modelBuilder.Entity("Publications.Web.Data.Publication", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Meta");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.Property<int?>("PlaceId");
-
-                    b.Property<int?>("TypeId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlaceId");
-
-                    b.HasIndex("TypeId");
-
-                    b.ToTable("Publications");
-                });
-
             modelBuilder.Entity("Publications.Web.Data.PublicationPlace", b =>
                 {
                     b.Property<int>("Id")
@@ -444,30 +405,6 @@ namespace Publications.Web.Data.Migrations
                     b.HasOne("Publications.Web.Data.AuthorPosition", "Position")
                         .WithMany()
                         .HasForeignKey("PositionId");
-                });
-
-            modelBuilder.Entity("Publications.Web.Data.AuthorPublication", b =>
-                {
-                    b.HasOne("Publications.Web.Data.Author", "Author")
-                        .WithMany("Publications")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Publications.Web.Data.Publication", "Publication")
-                        .WithMany("Authors")
-                        .HasForeignKey("PublicationId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Publications.Web.Data.Publication", b =>
-                {
-                    b.HasOne("Publications.Web.Data.PublicationPlace", "Place")
-                        .WithMany()
-                        .HasForeignKey("PlaceId");
-
-                    b.HasOne("Publications.Web.Data.PublicationType", "Type")
-                        .WithMany()
-                        .HasForeignKey("TypeId");
                 });
 #pragma warning restore 612, 618
         }
