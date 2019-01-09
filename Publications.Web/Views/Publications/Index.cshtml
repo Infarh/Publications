@@ -1,4 +1,5 @@
-﻿@using Publications.Web.Data
+﻿@using System.Globalization
+@using Publications.Web.Data
 @model Publications.Web.Models.Publications.OverviewModel
 
 @{
@@ -16,7 +17,10 @@ else
 {
     <table>
         <tr>
-            <th>Автор</th>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th>Возраст</th>
             <th></th>
             <th></th>
         </tr>
@@ -25,7 +29,15 @@ else
             <tr>
                 @using (Html.BeginForm("RemoveAuthor", "Publications", new { author.Id }, FormMethod.Post))
                 {
+                    <td>@author.Surname</td>
                     <td>@author.Name</td>
+                    <td>@author.Patronymic</td>
+                    <td>
+                        @if (author.Birthday.HasValue)
+                        {
+                            @(((DateTime.Now - author.Birthday.Value).TotalDays / 365).ToString("0.##",CultureInfo.InvariantCulture))
+                        }
+                    </td>
                     <td><a asp-action="EditAuthor" asp-route-id="@author.Id" class="btn btn-sm btn-primary">ред</a></td>
                     <td><button type="submit" class="btn btn-sm btn-danger">уд</button></td>
                 }
@@ -64,3 +76,14 @@ else
     </table>
 }
 <p>@Html.ActionLink("Добавить", "CreatePublication")</p>
+
+<hr />
+@Html.ActionLink("Редактировать степени авторов", "GetAuthorsDegrees")
+<br/>
+@Html.ActionLink("Редактировать звания авторов", "GetAuthorsGrades")
+<br />
+@Html.ActionLink("Редактировать должности авторов", "GetAuthorsPositions")
+<br />
+@Html.ActionLink("Редактировать места публикаций", "GetPublicationPlaces")
+<br />
+@Html.ActionLink("Редактировать типы публикаций", "GetPublicationTypes")

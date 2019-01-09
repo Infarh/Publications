@@ -1,0 +1,27 @@
+﻿@model Publications.Web.Data.AuthorGrade[]
+
+@{
+    ViewData["Title"] = "Звания";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+
+@if (Model.Length > 0)
+{
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li>@item.Name</li>
+        }
+    </ul>
+}
+else
+{
+    <p>Звания отсутствуют</p>
+}
+
+@Html.ActionLink("Создать новое", "CreateAuthorGrade", "Publications", null, new { @class = "btn btn-sm btn-primary" })
+<hr />
+
+@Html.ActionLink("Назад", "Index")

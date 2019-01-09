@@ -1,0 +1,26 @@
+﻿@model Publications.Web.Data.AuthorDegree[]
+
+@{
+    ViewBag.Title = "Степени";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model.Length > 0)
+{
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li>@item.Name</li>
+        }
+    </ul>
+}
+else
+{
+    <p>Степени отсутствуют</p>
+}
+
+@Html.ActionLink("Создать новую", "CreateAuthorDegree", "Publications", null, new { @class = "btn btn-sm btn-primary" })
+<hr />
+
+@Html.ActionLink("Назад", "Index")

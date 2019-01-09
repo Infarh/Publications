@@ -18,6 +18,8 @@ namespace Publications.Web.Models.Publications
         [Display(Name = "Отчество")]
         public string AuthorPatronimyc { get; set; }
         [Display(Name = "Дата рождения")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd'.'MM'.'yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? AuthorBirthday { get; set; }
     }
 }

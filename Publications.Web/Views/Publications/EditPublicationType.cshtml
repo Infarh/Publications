@@ -1,0 +1,14 @@
+﻿@model Publications.Web.Models.Publications.PublicationTypeInfo
+
+@{
+    ViewData["Title"] = "Редактировать тип публикации";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@using (Html.BeginForm("EditPublicationType", "Publications"))
+{
+    @Html.EditorForModel()
+    <button type="submit" class="btn btn-sm btn-primary">Редактировать</button>
+    @Html.ActionLink("Назад", "GetPublicationTypes");
+}

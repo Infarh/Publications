@@ -1,0 +1,14 @@
+﻿@model Publications.Web.Models.Publications.AuthorDegreeInfo
+
+@{
+    ViewData["Title"] = "Редактировать степень";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@using (Html.BeginForm("EditAuthorDegree", "Publications"))
+{
+    @Html.EditorForModel()
+    <button type="submit" class="btn btn-sm btn-primary">Редактировать</button>
+    @Html.ActionLink("Назад", "GetAuthorsDegrees");
+}

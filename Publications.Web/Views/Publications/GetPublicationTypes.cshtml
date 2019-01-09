@@ -1,0 +1,26 @@
+﻿@model Publications.Web.Data.PublicationType[]
+
+@{
+    ViewBag.Title = "Типы публикации";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model.Length > 0)
+{
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li>@item.Name</li>
+        }
+    </ul>
+}
+else
+{
+    <p>Типы публикации отсутствуют</p>
+}
+
+@Html.ActionLink("Создать новый", "CreatePublicationType", "Publications", null, new { @class = "btn btn-sm btn-primary" })
+<hr/>
+
+@Html.ActionLink("Назад", "Index")

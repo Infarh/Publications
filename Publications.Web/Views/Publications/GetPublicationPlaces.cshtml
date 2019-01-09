@@ -1,0 +1,26 @@
+﻿@model Publications.Web.Data.PublicationPlace[]
+
+@{
+    ViewBag.Title = "Места публикации";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (Model.Length > 0)
+{
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li>@item.Name</li>
+        }
+    </ul>
+}
+else
+{
+    <p>Места публикации отсутствуют</p>
+}
+
+@Html.ActionLink("Создать новое", "CreatePublicationPlace", "Publications", null, new { @class = "btn btn-sm btn-primary" })
+<hr />
+
+@Html.ActionLink("Назад", "Index")
