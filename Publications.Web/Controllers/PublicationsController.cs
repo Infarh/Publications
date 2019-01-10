@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.IO.Pipelines;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Publications.Web.Data;
@@ -21,7 +23,7 @@ namespace Publications.Web.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateAuthor(AuthorInfo model)
-        {
+        { 
             if (!ModelState.IsValid) return View(model);
             _db.Authors.Add(new Author
             {

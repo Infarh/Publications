@@ -1,5 +1,4 @@
 ﻿@using System.Globalization
-@using Publications.Web.Data
 @model Publications.Web.Models.Publications.OverviewModel
 
 @{
@@ -17,31 +16,31 @@ else
 {
     <table>
         <tr>
+            <th></th>
+            <th></th>
             <th>Фамилия</th>
             <th>Имя</th>
             <th>Отчество</th>
             <th>Возраст</th>
-            <th></th>
-            <th></th>
         </tr>
         @foreach (var author in Model.Authors)
         {
-            <tr>
-                @using (Html.BeginForm("RemoveAuthor", "Publications", new { author.Id }, FormMethod.Post))
-                {
-                    <td>@author.Surname</td>
-                    <td>@author.Name</td>
-                    <td>@author.Patronymic</td>
-                    <td>
-                        @if (author.Birthday.HasValue)
-                        {
-                            @(((DateTime.Now - author.Birthday.Value).TotalDays / 365).ToString("0.##",CultureInfo.InvariantCulture))
-                        }
-                    </td>
-                    <td><a asp-action="EditAuthor" asp-route-id="@author.Id" class="btn btn-sm btn-primary">ред</a></td>
-                    <td><button type="submit" class="btn btn-sm btn-danger">уд</button></td>
-                }
-            </tr>
+        <tr>
+            @using (Html.BeginForm("RemoveAuthor", "Publications", new { author.Id }, FormMethod.Post))
+            {
+                <td><a asp-action="EditAuthor" asp-route-id="@author.Id" class="btn btn-sm btn-primary">ред</a></td>
+                <td><button type="submit" class="btn btn-sm btn-danger">уд</button></td>
+                <td>@author.Surname</td>
+                <td>@author.Name</td>
+                <td>@author.Patronymic</td>
+                <td>
+                    @if (author.Birthday.HasValue)
+                    {
+                        @(((DateTime.Now - author.Birthday.Value).TotalDays / 365).ToString("0.##", CultureInfo.InvariantCulture))
+                    }
+                </td>
+            }
+        </tr>
         }
     </table>
 }
@@ -57,20 +56,20 @@ else
 {
     <table>
         <tr>
+            <th></th>
+            <th></th>
             <th>Публикация</th>
-            <th></th>
-            <th></th>
         </tr>
         @foreach (var publication in Model.Publications)
         {
-            <tr>
-                @using (Html.BeginForm("RemovePublication", "Publications", new { publication.Id }, FormMethod.Post))
-                {
-                    <td>@publication.Name</td>
-                    <td><a asp-action="EditPublication" asp-route-id="@publication.Id" class="btn btn-sm btn-primary">ред</a></td>
-                    <td><button type="submit" class="btn btn-sm btn-danger">уд</button></td>
-                }
-            </tr>
+        <tr>
+            @using (Html.BeginForm("RemovePublication", "Publications", new { publication.Id }, FormMethod.Post))
+            {
+                <td><a asp-action="EditPublication" asp-route-id="@publication.Id" class="btn btn-sm btn-primary">ред</a></td>
+                <td><button type="submit" class="btn btn-sm btn-danger">уд</button></td>
+                <td>@publication.Name</td>
+            }
+        </tr>
             //<li><a>@publication.Name</a> @Html.ActionLink("уд.", "RemovePublication", new {publication.Id}, new {@class = "text-danger"})</li>
         }
     </table>
