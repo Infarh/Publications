@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSwag.AspNetCore;
 using Publications.Web.Data;
+using Publications.Web.Hubs;
 
 namespace Publications.Web
 {
@@ -26,6 +28,8 @@ namespace Publications.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddSignalR();
+
             services.AddSwaggerDocument();
 
             services.AddDbContext<ApplicationDbContext>(
@@ -37,8 +41,7 @@ namespace Publications.Web
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddHealthChecks()
-                .AddDbContextCheck<ApplicationDbContext>();
+            services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -63,6 +66,8 @@ namespace Publications.Web
             app.UseHealthChecks("/ready");
             app.UseSwagger();
             app.UseSwaggerUi3();
+
+            app.UseSignalR(routes => routes.MapHub<InformationHub>("/info"));
 
             app.UseMvc(routes =>
             {

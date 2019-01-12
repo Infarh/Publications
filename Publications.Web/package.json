@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "name": "asp.net",
+  "private": true,
+  "author": "Shmachilin Pavel <shmachilin@gmail.com>",
+  "dependencies": {
+    "@aspnet/signalr": "^1.0.0"
+  },
+  "devDependencies": {
+    "@aspnet/signalr": "^1.0.0"
+  }
+}

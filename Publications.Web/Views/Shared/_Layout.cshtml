@@ -13,7 +13,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
               crossorigin="anonymous"
-              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE="/>
+              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
     </environment>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -48,8 +48,15 @@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+        <br />
+        <div>
+            <div id="InputForm">
+                <input type="text" id="message" />
+                <input type="button" id="SendButton" value="Отправить" />
+            </div>
+            <div id="InformationBlock"></div>
+        </div>
     </div>
-
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2019 - Publications.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Приватность</a>
@@ -75,6 +82,30 @@
         </script>
     </environment>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="js/signalr.min.js"></script>
+    <script>
+        let hub_url = 'https://localhost:44376/info';
+        //let hub_url = 'https://localhost:5001/info';
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl(hub_url)
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+        connection.on("Send", function (data)
+        {
+            let element = document.createElement("p");
+            element.appendChild(document.createTextNode(data));
+            let first_element = document.getElementById("InformationBlock").firstChild;
+            document.getElementById("InformationBlock").insertBefore(element, first_element);
+        });
+
+        document.getElementById("SendButton").addEventListener("click", function (e)
+        {
+            let information = document.getElementById("message").value;
+            connection.invoke("Send", information);
+        });
+
+        connection.start();
+    </script>
 
     @RenderSection("Scripts", required: false)
 </body>
