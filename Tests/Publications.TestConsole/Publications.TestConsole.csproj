@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MathCore.Hosting" Version="0.0.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Publications.Domain\Publications.Domain.csproj" />
+    <ProjectReference Include="..\..\Data\Publications.DAL.Sqlite\Publications.DAL.Sqlite.csproj" />
+    <ProjectReference Include="..\..\Data\Publications.DAL.SqlServer\Publications.DAL.SqlServer.csproj" />
+    <ProjectReference Include="..\..\Services\Publications.Services\Publications.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
