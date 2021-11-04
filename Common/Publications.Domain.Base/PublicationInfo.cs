@@ -11,5 +11,7 @@ namespace Publications.Domain.Base
         public DateTime Date { get; set; }
         public ICollection<AuthorInfo> Authors { get; set; } = new HashSet<AuthorInfo>();
         public PublicationPlaceInfo Place { get; set; }
+
+        public ICollection<string> KeyWords { get; set; } = new HashSet<string>();
     }
 }

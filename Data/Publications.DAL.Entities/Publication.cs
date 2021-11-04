@@ -11,5 +11,7 @@ namespace Publications.DAL.Entities
         public DateTime Date { get; set; }
         public ICollection<Author> Authors { get; set; }
         public PublicationPlace Place { get; set; }
+
+        public ICollection<KeyWord> KeyWords { get; set; }
     }
 }
