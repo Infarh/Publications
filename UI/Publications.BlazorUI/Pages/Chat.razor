@@ -1,0 +1,41 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client
+@page "/chat"
+@implements IAsyncDisposable
+@inject NavigationManager Navigator
+
+@code {
+
+    private HubConnection _Connection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _Connection = new HubConnectionBuilder()
+            .WithUrl(Navigator.ToAbsoluteUri("/chat"))
+            .Build();
+
+        _Connection.On<string, string>("Message", (user, message) => _Messages.Add((user, message)));
+
+        await _Connection.StartAsync();
+    }
+
+    private readonly List<(string User, string Message)> _Messages = new();
+
+    private bool IsConnected => _Connection?.State == HubConnectionState.Connected;
+
+    private string _User;
+
+    private string _Message;
+
+    private async ValueTask Send()
+    {
+        if (!IsConnected || _Message is not { Length: > 0 } message) return;
+        await _Connection.SendAsync(_User, message);
+        _Message = null;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if(_Connection is { } connection)
+            await connection.DisposeAsync();
+    }
+}

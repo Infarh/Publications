@@ -1,0 +1,78 @@
+﻿@page "/author/{AuthorId}"
+@inject MainViewModel Model
+
+<h3>Автор</h3>
+
+@if (_Author is not { } author)
+{
+    <p>Автор с id:@AuthorId не найден</p>
+}
+else
+{
+    <dl class="row">
+        <dt class="col-sm-2"><label class="pull-right">id:</label></dt>
+        <dd class="col-sm-10">@author.Id</dd>
+
+        <dt class="col-sm-2"><label class="pull-right">Фамилия:</label></dt>
+        <dd class="col-sm-10">@author.LastName</dd>
+
+        <dt class="col-sm-2"><label class="pull-right">Имя:</label></dt>
+        <dd class="col-sm-10">@author.FirstName</dd>
+
+        <dt class="col-sm-2"><label class="pull-right">Отчество:</label></dt>
+        <dd class="col-sm-10">@author.Patronymic</dd>
+
+        <dt class="col-sm-2"><label class="pull-right">Дата рождения:</label></dt>
+        <dd class="col-sm-10">@author.Birthday.ToShortDateString()</dd>
+    </dl>
+}
+
+<a class="btn btn-primary" href="/">К списку</a>
+
+@if (Publications is { Count: > 0 } publications)
+{
+    <hr />
+
+    <h4>Публикации</h4>
+
+    <ul>
+        @foreach (var publication in publications)
+        {
+            <li>@publication.Title</li>
+        }
+    </ul>
+}
+
+@code
+{
+    private AuthorViewModel _Author;
+
+    [Parameter]
+    public string AuthorId { get; set; }
+
+    private ICollection<PublicationViewModel> _Publications;
+    public ICollection<PublicationViewModel> Publications
+    {
+        get
+        {
+            if (_Author is null) return null;
+            if(_Publications is null)
+                UpdatePublications();
+            return _Publications;
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        if (int.TryParse(AuthorId, out var id) && await Model.GetAuthorById(id) is { } author)
+        {
+            Model.PageHeaderText = $"Автор {author.Id}";
+            _Author = author;
+        }
+        else
+            Model.PageHeaderText = "Автор";
+    }
+
+    private async void UpdatePublications() => _Publications = await Model.GetAuthorPublications(_Author.Id);
+}

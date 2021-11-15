@@ -1,5 +1,49 @@
 @page "/"
+@inject MainViewModel Model
+@inject NavigationManager Navigator
 
-<h3>Start page</h3>
+<h3>Авторы</h3>
 
-Index
+@if (Model.Authors is not { Count: > 0 } authors)
+{
+    <p><em>Пусто</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Отчество</th>
+                <th>Дата рождения</th>
+                <th>Число публикаций</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var author in authors)
+            {
+                <tr @onclick="e => OnAuthorSelected(author)">
+                    <td>@author.Id</td>
+                    <td>@author.LastName</td>
+                    <td>@author.FirstName</td>
+                    <td>@author.Patronymic</td>
+                    <td>@author.Birthday.ToShortDateString()</td>
+                    <td>@author.PublicationsCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+
+    private void OnAuthorSelected(AuthorViewModel Author)
+    {
+        Navigator.NavigateTo($"/Author/{Author.Id}");
+    }
+
+    protected override void OnInitialized() { Model.PageHeaderText = "Авторы"; }
+
+}

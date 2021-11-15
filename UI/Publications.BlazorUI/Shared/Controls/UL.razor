@@ -1,0 +1,28 @@
+﻿@typeparam TItem
+
+<ul @attributes=@Attributes>
+    @if (ChildContent is { } template)
+    {
+        foreach (var item in Items)
+        {
+            <li>@template(item)</li>
+        }
+    }
+    else
+    {
+        foreach (var item in Items)
+        {
+            <li>@item</li>
+        }
+    }
+</ul>
+
+@code{
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> Attributes { get; set; } = new(StringComparer.OrdinalIgnoreCase);
+
+    public IEnumerable<TItem> Items { get; set; }
+
+    public RenderFragment<TItem> ChildContent { get; set; }
+}

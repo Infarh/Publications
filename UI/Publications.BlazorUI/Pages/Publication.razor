@@ -1,0 +1,18 @@
+﻿@page "/publication/{PublicationId}"
+@inject MainViewModel Model
+
+
+
+@code
+{
+    [Parameter]
+    public string PublicationId { get; set; }
+
+    private PublicationViewModel _Publication;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (int.TryParse(PublicationId, out var id) && await Model.GetPublicationById(id) is { } publication)
+            _Publication = publication;
+    }
+}
